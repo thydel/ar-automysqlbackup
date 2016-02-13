@@ -1,0 +1,8 @@
+# -*- Mode: YAML; mmm-classes: (embedded-rst embedded-m4); indent-tabs-mode: nil; fill-column: 96; -*-
+
+---
+
+- name: automysqlbackup - copy local tools
+  copy: src={{ item }} dest=/usr/local/bin/{{ item }} mode=0755
+  with_items:
+    - split-mysqldump.awk

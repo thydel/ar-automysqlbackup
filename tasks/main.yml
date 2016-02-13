@@ -1,0 +1,6 @@
+---
+# tasks file for thy.automysqlbackup
+
+- include: install.yml tags=install
+- include: config.yml tags=config
+- include: tools.yml tags=tools

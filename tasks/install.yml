@@ -1,0 +1,15 @@
+# -*- Mode: YAML; mmm-classes: (embedded-rst embedded-m4); indent-tabs-mode: nil; fill-column: 96; -*-
+
+---
+
+- set_fact: { use_commit: True }
+
+- include: commit-etc.yml comment='Before installing automysqlbackup'
+
+- name: automysqlbackup - install
+  apt: name=automysqlbackup update_cache=yes
+
+- include: commit-etc.yml comment='After installing automysqlbackup'
+
+- name: automysqlbackup - create backupdir
+  file: path={{ automysqlbackup_backupdir }} state=directory

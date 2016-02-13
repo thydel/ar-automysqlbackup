@@ -1,0 +1,11 @@
+splitting mysql dump file
+
+https://gist.github.com/jasny/1608062
+http://stackoverflow.com/questions/132902/how-do-i-split-the-output-from-mysqldump-into-smaller-files/9949414#9949414
+https://github.com/Verace/MySQLDumpSplitter
+https://github.com/ripienaar/mysql-dump-split
+http://kedar.nitty-witty.com/blog/mydumpsplitter-extract-tables-from-mysql-dump-shell-script
+
+csplit memory exhausted
+
+https://lists.gnu.org/archive/html/bug-coreutils/2010-11/msg00071.html

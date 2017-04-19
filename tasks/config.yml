@@ -1,15 +1,14 @@
 ---
 
-- set_fact: { use_commit: True }
-
 - set_fact:
+    name: automysqlbackup
     conf:
       file: /etc/default/automysqlbackup
       vars:
         backupdir:
           old: BACKUPDIR="/var/lib/automysqlbackup"
-          new: |
-            {{ 'BACKUPDIR="' + automysqlbackup_backupdir + '"' }}
+          new: |-
+            {{ 'BACKUPDIR="' + backupdir + '"' }}
         latest:
           old: LATEST=no
           new: LATEST=yes
@@ -17,14 +16,28 @@
           old: MAILCONTENT="quiet"
           new: MAILCONTENT="log"
 
-- include: commit-etc.yml comment='Before configuring automysqlbackup'
 
-- name: automysqlbackup - conf comment out orig value loop
-  replace: dest={{ conf.file }} regexp={{ "'^" + item.value.old + "$'" }} replace='#\g<0>'
-  with_dict: conf.vars
+- hg_commit: { cwd: /etc, com: 'Before configuring {{ name }}', user: '{{ user_email }}' }
 
-- name: automysqlbackup - conf setup new value loop
-  lineinfile: dest={{ conf.file }} line='{{ item.value.new }}' insertafter={{ "'^#" + item.value.old + "$'" }}
-  with_dict: conf.vars
 
-- include: commit-etc.yml comment='After configuring automysqlbackup'
+- name: Conf comment out orig value loop
+  with_dict: '{{ conf.vars }}'
+
+  replace:
+    dest: '{{ conf.file }}'
+    regexp: |-
+      {{ "^" + item.value.old + "$" }}
+    replace: '#\g<0>'
+
+
+- name: Conf setup new value loop
+  with_dict: '{{ conf.vars }}'
+
+  lineinfile:
+    dest: '{{ conf.file }}'
+    line: '{{ item.value.new }}'
+    insertafter: |-
+      {{ "^#" + item.value.old + "$" }}
+
+
+- hg_commit: { cwd: /etc, com: 'After configuring {{ name }}', user: '{{ user_email }}' }

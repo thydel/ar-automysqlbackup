@@ -1,6 +1,9 @@
 ---
 
-- name: automysqlbackup - copy local tools
-  copy: src={{ item }} dest=/usr/local/bin/{{ item }} mode=0755
-  with_items:
-    - split-mysqldump.awk
+- name: copy local tools
+  with_items: [ split-mysqldump.awk ]
+
+  copy:
+    src: '{{ item }}'
+    dest: /usr/local/bin/{{ item }}
+    mode: 0755

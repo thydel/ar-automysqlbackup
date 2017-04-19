@@ -1,5 +1,29 @@
 ---
 
-- include: install.yml tags=install
-- include: config.yml tags=config
-- include: tools.yml tags=tools
+- git_config:
+    name: user.email
+    scope: local
+    repo: '{{ playbook_dir }}'
+  register: git_config
+  delegate_to: localhost
+  name: Get user email from git local config
+
+- set_fact:
+    user_email: '{{ git_config.config_value }}'
+
+- hg_commit: { cwd: /etc, com: 'Sync before {{ role_path | basename }} role', user: '{{ user_email }}' }
+
+- { include: install.yml, tags: install }
+- { include: config.yml,  tags: config }
+- { include: tools.yml,   tags: tools }
+
+- name: Push if requested
+  delegate_to: localhost
+  register: do_push
+  failed_when: do_push.rc > 1
+  changed_when: False
+  when: push | default(False)
+  command: ssh -A {{ ansible_ssh_host | default(inventory_hostname) }} -l root hg --cwd /etc push
+
+- name: Print last commit id
+  debug: { var: hg_commit.id }

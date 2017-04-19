@@ -1,13 +1,10 @@
 ---
 
-- set_fact: { use_commit: True }
+- set_fact: { name: automysqlbackup, time: 3600 }
 
-- include: commit-etc.yml comment='Before installing automysqlbackup'
+- apt: { update_cache: True, cache_valid_time: '{{ time }}' }
+- hg_commit: { cwd: /etc, com: 'Before installing {{ name }}', user: '{{ user_email }}' }
+- apt: { name: '{{ name }}' }
+- hg_commit: { cwd: /etc, com: 'After installing {{ name }}', user: '{{ user_email }}' }
 
-- name: automysqlbackup - install
-  apt: name=automysqlbackup update_cache=yes
-
-- include: commit-etc.yml comment='After installing automysqlbackup'
-
-- name: automysqlbackup - create backupdir
-  file: path={{ automysqlbackup_backupdir }} state=directory
+- file: { path: '{{ backupdir }}', state: directory }

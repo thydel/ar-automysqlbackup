@@ -17,11 +17,16 @@
           new: MAILCONTENT="log"
 
 
+- stat: { path: '{{ conf.file }}' }
+  register: st
+
 - hg_commit: { cwd: /etc, com: 'Before configuring {{ name }}', user: '{{ user_email }}' }
 
 
 - name: Conf comment out orig value loop
   with_dict: '{{ conf.vars }}'
+  loop_control: { label: '{{ item.key }}' }
+  when: st.stat.exists
 
   replace:
     dest: '{{ conf.file }}'
@@ -32,6 +37,8 @@
 
 - name: Conf setup new value loop
   with_dict: '{{ conf.vars }}'
+  loop_control: { label: '{{ item.key }}' }
+  when: st.stat.exists
 
   lineinfile:
     dest: '{{ conf.file }}'

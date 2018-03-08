@@ -4,7 +4,7 @@
 
 - apt: { update_cache: True, cache_valid_time: '{{ time }}' }
 - hg_commit: { cwd: /etc, com: 'Before installing {{ name }}', user: '{{ user_email }}' }
-- apt: { name: '{{ name }}' }
+- { apt: { name: '{{ item }}' }, with_items: [ '{{ name }}', rdfind ] }
 - hg_commit: { cwd: /etc, com: 'After installing {{ name }}', user: '{{ user_email }}' }
 
 - file: { path: '{{ backupdir }}', state: directory }

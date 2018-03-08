@@ -15,7 +15,9 @@
         mailcontent:
           old: MAILCONTENT="quiet"
           new: MAILCONTENT="log"
-
+        postbackup:
+          old: '#POSTBACKUP="/etc/mysql-backup-post"'
+          new: POSTBACKUP="/usr/local/bin/mysql-backup-post"
 
 - stat: { path: '{{ conf.file }}' }
   register: st
@@ -46,5 +48,11 @@
     insertafter: |-
       {{ "^#" + item.value.old + "$" }}
 
+
+- name: Add mysql-backup-post
+  template:
+    src: mysql-backup-post.j2
+    dest: /usr/local/bin/mysql-backup-post
+    mode: 755
 
 - hg_commit: { cwd: /etc, com: 'After configuring {{ name }}', user: '{{ user_email }}' }

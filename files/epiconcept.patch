@@ -1,0 +1,20 @@
+--- automysqlbackup.00	2014-07-23 10:21:08.000000000 +0200
++++ automysqlbackup	2017-12-08 01:37:57.367781422 +0100
+@@ -354,7 +354,7 @@
+ LOGFILE=$BACKUPDIR/$DBHOST-`date +%N`.log		# Logfile Name
+ LOGERR=$BACKUPDIR/ERRORS_$DBHOST-`date +%N`.log		# Logfile Name
+ BACKUPFILES=""
+-OPT="--quote-names --events"			# OPT string for use with mysqldump ( see man mysqldump )
++OPT="--quote-names --events --skip-dump-date --skip-comments" # OPT string for use with mysqldump ( see man mysqldump )
+ 
+ # Add --compress mysqldump option to $OPT
+ if [ "$COMMCOMP" = "yes" ];
+@@ -442,7 +442,7 @@
+ SUFFIX=""
+ compression () {
+ if [ "$COMP" = "gzip" ]; then
+-	gzip -f "$1"
++	gzip -f -n --rsyncable "$1"
+ 	echo
+ 	echo Backup Information for "$1"
+ 	gzip -l "$1.gz"

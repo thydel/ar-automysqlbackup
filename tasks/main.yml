@@ -15,6 +15,7 @@
 
 - { include: install.yml, tags: install }
 - { include: config.yml,  tags: config }
+- { include: patch.yml,   tags: patch }
 - { include: tools.yml,   tags: tools }
 
 - name: Push if requested

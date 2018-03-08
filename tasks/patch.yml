@@ -1,0 +1,7 @@
+---
+
+- patch:
+    src: epiconcept.patch
+    basedir: /usr/sbin
+    backup: True
+  name: Patches automysqlbackup

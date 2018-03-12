@@ -53,6 +53,6 @@
   template:
     src: mysql-backup-post.j2
     dest: /usr/local/bin/mysql-backup-post
-    mode: 755
+    mode: 0755
 
 - hg_commit: { cwd: /etc, com: 'After configuring {{ name }}', user: '{{ user_email }}' }

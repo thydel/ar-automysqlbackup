@@ -7,4 +7,11 @@
 - { apt: { name: '{{ item }}' }, with_items: [ '{{ name }}', rdfind ] }
 - hg_commit: { cwd: /etc, com: 'After installing {{ name }}', user: '{{ user_email }}' }
 
-- file: { path: '{{ backupdir }}', state: directory }
+- stat:
+    path: '{{ backupdir }}'
+  register: path
+
+- file:
+    path: '{{ backupdir }}'
+    state: directory
+  when: not path.stat.exists

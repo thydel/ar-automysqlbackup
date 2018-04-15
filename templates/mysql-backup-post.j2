@@ -2,3 +2,4 @@
 
 BACKUPDIR="{{ backupdir }}"
 rdfind -outputname $BACKUPDIR/rdfind.out -makehardlinks true $BACKUPDIR
+(cd $BACKUPDIR/latest; ls | sed -e 's/^\(.*\)_20[0-9][0-9]-..-.._..h..m.[A-Z][a-z][a-z]*.sql.gz/mv & \1.sql.gz/' | dash)

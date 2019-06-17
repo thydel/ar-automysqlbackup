@@ -18,6 +18,9 @@
         postbackup:
           old: '#POSTBACKUP="/etc/mysql-backup-post"'
           new: POSTBACKUP="/usr/local/bin/mysql-backup-post"
+        create_database:
+          old: CREATE_DATABASE=yes
+          new: CREATE_DATABASE=no
 
 - stat: { path: '{{ conf.file }}' }
   register: st
